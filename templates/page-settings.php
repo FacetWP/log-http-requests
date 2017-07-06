@@ -31,7 +31,9 @@ $rows = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}lhr_log ORDER BY id DE
     white-space: pre;
     overflow: auto;
 }
+
 /* grid */
+
 .wrapper {
   display: grid;
   grid-template-columns: 50% 50%;
@@ -39,6 +41,7 @@ $rows = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}lhr_log ORDER BY id DE
 }
 
 /* modal */
+
 .media-modal,
 .media-modal-backdrop {
     display: none;

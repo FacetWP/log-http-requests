@@ -62,7 +62,7 @@ class Log_HTTP_Requests
         new LHR_Upgrade();
 
         if ( ! wp_next_scheduled( 'lhr_cleanup_cron' ) ) {
-            wp_schedule_single_event( time() + 300, 'lhr_cleanup_cron' );
+            wp_schedule_single_event( time() + 86400, 'lhr_cleanup_cron' );
         }
     }
 
@@ -71,8 +71,8 @@ class Log_HTTP_Requests
         global $wpdb;
 
         $now = current_time( 'timestamp' );
-        $now = date( 'Y-m-d H:i:s', strtotime( '-1 day', $now ) );
-        $wpdb->query( "DELETE FROM {$wpdb->prefix}lhr_log WHERE date_added < '$now'" );
+        $yesterday = date( 'Y-m-d H:i:s', strtotime( '-1 day', $now ) );
+        $wpdb->query( "DELETE FROM {$wpdb->prefix}lhr_log WHERE date_added < '$yesterday'" );
     }
 
 
