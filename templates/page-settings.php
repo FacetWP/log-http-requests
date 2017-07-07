@@ -135,6 +135,15 @@ var LHR = {
             }, 'json');
         }
 
+        LHR.clear = function() {
+            $.post(ajaxurl, {
+                'action': 'lhr_clear',
+                '_wpnonce': '<?php echo $nonce; ?>'
+            }, function(data) {
+                $('.lhr-listing tbody').html('');
+            }, 'json');
+        }
+
         $(document).on('click', '.field-url a', function() {
             var id = parseInt($(this).attr('data-id'));
             var data = LHR.response[id];
@@ -142,16 +151,6 @@ var LHR = {
             $('.http-response').text(JSON.stringify(JSON.parse(data.response), null, 2));
             $('.media-modal').show();
             $('.media-modal-backdrop').show();
-        });
-
-        // Clear log
-        $(document).on('click', '.lhr-clear', function() {
-            $.post(ajaxurl, {
-                'action': 'lhr_clear',
-                '_wpnonce': '<?php echo $nonce; ?>'
-            }, function(data) {
-                $('.lhr-listing tbody').html('');
-            }, 'json');
         });
 
         // Page change
@@ -175,7 +174,8 @@ var LHR = {
 <div class="wrap">
     <h3>Log HTTP Requests</h3>
 
-    <button class="button lhr-clear">Clear log</button>
+    <button class="button" onclick="LHR.clear()">Clear log</button>
+    <button class="button" onclick="LHR.refresh()">Refresh</button>
     <div class="lhr-pager"></div>
     <table class="widefat lhr-listing">
         <thead>
