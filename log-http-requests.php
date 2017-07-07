@@ -104,9 +104,8 @@ class Log_HTTP_Requests
         $args = $_POST['data'];
 
         $output = array(
-            'rows'      => LHR()->query->get_results( $args ),
-            'pager'     => LHR()->query->paginate(),
-            'sql'       => LHR()->query->sql,
+            'rows'  => LHR()->query->get_results( $args ),
+            'pager' => LHR()->query->paginate()
         );
 
         echo json_encode( $output );

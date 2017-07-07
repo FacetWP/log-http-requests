@@ -1,0 +1,94 @@
+/* table */
+
+.widefat td {
+    font-size: 12px;
+}
+
+.widefat .field-url div {
+    width: 480px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.widefat .field-runtime,
+.widefat .field-date {
+    width: 100px;
+}
+
+.widefat .field-args,
+.widefat .field-response {
+    display: none;
+}
+
+.widefat .field-runtime.warn {
+    background-color: rgba(255, 235, 59, 0.2);
+}
+
+.widefat .field-runtime.error {
+    background-color: rgba(244, 67, 54, 0.2);
+}
+
+.http-request-args,
+.http-response {
+    max-height: 360px;
+    font-family: monospace;
+    white-space: pre;
+    overflow: auto;
+}
+
+/* pager */
+
+.lhr-pager {
+    padding: 10px 0;
+    text-align: right;
+}
+
+.lhr-page {
+    display: inline-block;
+    padding: 0px 4px;
+    margin-right: 6px;
+    cursor: pointer;
+}
+
+.lhr-page.active {
+    font-weight: bold;
+    cursor: default;
+}
+
+/* grid */
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-gap: 10px;
+}
+
+/* modal */
+
+.media-modal,
+.media-modal-backdrop {
+    display: none;
+}
+
+.media-frame-title,
+.media-frame-content {
+    left: 0;
+}
+
+.media-frame-router {
+    left: 10px;
+}
+
+.media-frame-content {
+    bottom: 0;
+    overflow: auto;
+}
+
+.media-modal-close {
+    cursor: pointer;
+}
+
+.modal-content-wrap {
+    padding: 16px;
+}
