@@ -1,8 +1,6 @@
 <?php
 
-global $wpdb;
-
-$rows = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}lhr_log ORDER BY id DESC LIMIT 50" );
+$nonce = wp_create_nonce( 'lhr_nonce' );
 
 ?>
 
@@ -23,6 +21,12 @@ $rows = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}lhr_log ORDER BY id DE
 .widefat .field-args,
 .widefat .field-response {
     display: none;
+}
+.widefat .field-runtime.warn {
+    background-color: rgba(255, 235, 59, 0.2);
+}
+.widefat .field-runtime.error {
+    background-color: rgba(244, 67, 54, 0.2);
 }
 .http-request-args,
 .http-response {
@@ -71,14 +75,60 @@ $rows = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}lhr_log ORDER BY id DE
 </style>
 
 <script>
+var LHR = {
+    response: []
+};
+
 (function($) {
     $(function() {
+
+        LHR.refresh = function() {
+            $.post(ajaxurl, {
+                'action': 'lhr_query',
+                '_wpnonce': '<?php echo $nonce; ?>',
+                'data': {
+                    'orderby': 'id',
+                    'order': 'DESC'
+                }
+            }, function(data) {
+                LHR.response = data;
+
+                var html = '';
+                $.each(data, function(idx, row) {
+                    var runtime = parseFloat(row.runtime);
+                    var css_class = (runtime > 1) ? ' warn' : '';
+                    css_class = (runtime > 2) ? ' error' : css_class;
+                    html += `
+                    <tr>
+                        <td class="field-url">
+                            <div><a href="javascript:;" data-id="` + idx + `">` + row.url + `</a></div>
+                        </td>
+                        <td class="field-runtime` + css_class + `">` + row.runtime + `</td>
+                        <td class="field-date">` + row.date_added + `</td>
+                    </tr>
+                    `;
+                });
+                $('.lhr-listing tbody').html(html);
+            }, 'json');
+        }
+
         $(document).on('click', '.field-url a', function() {
-            var $parent = $(this).closest('.field-url');
-            $('.http-request-args').text($parent.find('.field-args').text());
-            $('.http-response').text($parent.find('.field-response').text());
+            var id = parseInt($(this).attr('data-id'));
+            var data = LHR.response[id];
+            $('.http-request-args').text(JSON.stringify(JSON.parse(data.request_args), null, 2));
+            $('.http-response').text(JSON.stringify(JSON.parse(data.response), null, 2));
             $('.media-modal').show();
             $('.media-modal-backdrop').show();
+        });
+
+        // Clear log
+        $(document).on('click', '.lhr-clear', function() {
+            $.post(ajaxurl, {
+                'action': 'lhr_clear',
+                '_wpnonce': '<?php echo $nonce; ?>'
+            }, function(data) {
+                $('.lhr-listing tbody').html('');
+            }, 'json');
         });
 
         // Close modal window
@@ -86,6 +136,9 @@ $rows = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}lhr_log ORDER BY id DE
             $('.media-modal').hide();
             $('.media-modal-backdrop').hide();
         });
+
+        // Ajax
+        LHR.refresh();
     });
 })(jQuery);
 </script>
@@ -93,8 +146,8 @@ $rows = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}lhr_log ORDER BY id DE
 <div class="wrap">
     <h3>Log HTTP Requests</h3>
 
-    <button class="button">Clear log</button>
-    <table class="widefat">
+    <button class="button lhr-clear">Clear log</button>
+    <table class="widefat lhr-listing">
         <thead>
             <tr>
                 <td>URL</td>
@@ -102,21 +155,7 @@ $rows = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}lhr_log ORDER BY id DE
                 <td>Date Added</td>
             </tr>
         </thead>
-<?php foreach ( $rows as $row ) : ?>
-<?php
-$args = unserialize( $row->request_args );
-$response = unserialize( $row->response );
-?>
-        <tr>
-            <td class="field-url">
-                <div><a href="javascript:;"><?php echo $row->url; ?></a></div>
-                <div class="field-args"><?php var_dump( $args ); ?></div>
-                <div class="field-response"><?php var_dump( $response ); ?></div>
-            </td>
-            <td class="field-runtime"><?php echo round( $row->runtime, 4 ); ?></td>
-            <td class="field-date"><?php echo LHR()->time_since( $row->date_added ); ?></td>
-        </tr>
-<?php endforeach; ?>
+        <tbody></tbody>
     </table>
 </div>
 

@@ -26,6 +26,7 @@ defined( 'ABSPATH' ) or exit;
 
 class Log_HTTP_Requests
 {
+    public $query;
     public $start_time;
     public static $instance;
 
@@ -44,6 +45,8 @@ class Log_HTTP_Requests
         add_filter( 'http_request_args', array( $this, 'start_timer' ) );
         add_action( 'http_api_debug', array( $this, 'capture_request' ), 10, 5 );
         add_action( 'lhr_cleanup_cron', array( $this, 'cleanup' ) );
+        add_action( 'wp_ajax_lhr_query', array( $this, 'lhr_query' ) );
+        add_action( 'wp_ajax_lhr_clear', array( $this, 'lhr_clear' ) );
         // apply_filters( 'http_response', $response, $r, $url );
     }
 
@@ -58,8 +61,10 @@ class Log_HTTP_Requests
 
     function init() {
         include( LHR_DIR . '/includes/class-upgrade.php' );
+        include( LHR_DIR . '/includes/class-query.php' );
 
         new LHR_Upgrade();
+        $this->query = new LHR_Query();
 
         if ( ! wp_next_scheduled( 'lhr_cleanup_cron' ) ) {
             wp_schedule_single_event( time() + 86400, 'lhr_cleanup_cron' );
@@ -93,6 +98,23 @@ class Log_HTTP_Requests
     }
 
 
+    function lhr_query() {
+        check_ajax_referer( 'lhr_nonce' );
+
+        $args = $_POST['data'];
+        $results = LHR()->query->get_results( $args );
+        echo json_encode( $results );
+        wp_die();
+    }
+
+
+    function lhr_clear() {
+        check_ajax_referer( 'lhr_nonce' );
+
+        LHR()->query->truncate_table();
+    }
+
+
     function start_timer( $args ) {
         $this->start_time = microtime( true );
         return $args;
@@ -108,8 +130,8 @@ class Log_HTTP_Requests
 
         $wpdb->insert( $wpdb->prefix . 'lhr_log', array(
             'url' => $url,
-            'request_args' => serialize( $args ),
-            'response' => serialize( $response ),
+            'request_args' => json_encode( $args ),
+            'response' => json_encode( $response ),
             'runtime' => ( microtime( true ) - $this->start_time ),
             'date_added' => current_time( 'mysql' )
         ) );
