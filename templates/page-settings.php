@@ -36,6 +36,25 @@ $nonce = wp_create_nonce( 'lhr_nonce' );
     overflow: auto;
 }
 
+/* pager */
+
+.lhr-pager {
+    padding: 10px 0;
+    text-align: right;
+}
+
+.lhr-page {
+    display: inline-block;
+    padding: 0px 4px;
+    margin-right: 6px;
+    cursor: pointer;
+}
+
+.lhr-page.active {
+    font-weight: bold;
+    cursor: default;
+}
+
 /* grid */
 
 .wrapper {
@@ -76,7 +95,12 @@ $nonce = wp_create_nonce( 'lhr_nonce' );
 
 <script>
 var LHR = {
-    response: []
+    response: [],
+    query_args: {
+        'orderby': 'id',
+        'order': 'DESC',
+        'page': 1
+    }
 };
 
 (function($) {
@@ -86,15 +110,13 @@ var LHR = {
             $.post(ajaxurl, {
                 'action': 'lhr_query',
                 '_wpnonce': '<?php echo $nonce; ?>',
-                'data': {
-                    'orderby': 'id',
-                    'order': 'DESC'
-                }
+                'data': LHR.query_args
             }, function(data) {
                 LHR.response = data;
+                LHR.query_args.page = 1;
 
                 var html = '';
-                $.each(data, function(idx, row) {
+                $.each(data.rows, function(idx, row) {
                     var runtime = parseFloat(row.runtime);
                     var css_class = (runtime > 1) ? ' warn' : '';
                     css_class = (runtime > 2) ? ' error' : css_class;
@@ -109,6 +131,7 @@ var LHR = {
                     `;
                 });
                 $('.lhr-listing tbody').html(html);
+                $('.lhr-pager').html(data.pager);
             }, 'json');
         }
 
@@ -131,6 +154,12 @@ var LHR = {
             }, 'json');
         });
 
+        // Page change
+        $(document).on('click', '.lhr-page:not(.active)', function() {
+            LHR.query_args.page = parseInt($(this).attr('data-page'));
+            LHR.refresh();
+        });
+
         // Close modal window
         $(document).on('click', '.media-modal-close', function() {
             $('.media-modal').hide();
@@ -147,6 +176,7 @@ var LHR = {
     <h3>Log HTTP Requests</h3>
 
     <button class="button lhr-clear">Clear log</button>
+    <div class="lhr-pager"></div>
     <table class="widefat lhr-listing">
         <thead>
             <tr>
@@ -157,6 +187,7 @@ var LHR = {
         </thead>
         <tbody></tbody>
     </table>
+    <div class="lhr-pager"></div>
 </div>
 
 <!-- Modal window -->

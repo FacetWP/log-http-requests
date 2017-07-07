@@ -102,8 +102,14 @@ class Log_HTTP_Requests
         check_ajax_referer( 'lhr_nonce' );
 
         $args = $_POST['data'];
-        $results = LHR()->query->get_results( $args );
-        echo json_encode( $results );
+
+        $output = array(
+            'rows'      => LHR()->query->get_results( $args ),
+            'pager'     => LHR()->query->paginate(),
+            'sql'       => LHR()->query->sql,
+        );
+
+        echo json_encode( $output );
         wp_die();
     }
 
