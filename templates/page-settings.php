@@ -9,8 +9,6 @@ var LHR = {
     nonce: '<?php echo wp_create_nonce( 'lhr_nonce' ); ?>'
 };
 </script>
-<script src="<?php echo LHR_URL; ?>/assets/js/admin.js"></script>
-<link href="<?php echo LHR_URL; ?>/assets/css/admin.css" rel="stylesheet">
 
 <div class="wrap">
     <h3>Log HTTP Requests</h3>
