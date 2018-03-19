@@ -2,7 +2,7 @@
 Contributors: mgibbs189
 Tags: log, wp_http, requests, update checks, api
 Requires at least: 4.7
-Tested up to: 4.8
+Tested up to: 4.9.4
 Stable tag: trunk
 License: GPLv2
 
@@ -25,6 +25,9 @@ This plugin logs all WP_HTTP requests and displays them in a table listing for e
 2. Browse to the `Log HTTP Requests` menu to view log entries.
 
 == Changelog ==
+
+= 1.0.1 =
+* Tested compatibility against WP 4.9.4
 
 = 1.0.0 =
 * Initial release
