@@ -47,7 +47,6 @@ class Log_HTTP_Requests
         add_action( 'lhr_cleanup_cron', array( $this, 'cleanup' ) );
         add_action( 'wp_ajax_lhr_query', array( $this, 'lhr_query' ) );
         add_action( 'wp_ajax_lhr_clear', array( $this, 'lhr_clear' ) );
-        // apply_filters( 'http_response', $response, $r, $url );
     }
 
 
@@ -110,8 +109,7 @@ class Log_HTTP_Requests
             'pager' => LHR()->query->paginate()
         );
 
-        echo json_encode( $output );
-        wp_die();
+        wp_send_json( $output );
     }
 
 

@@ -81,12 +81,14 @@
 }
 
 .media-frame-content {
+    top: 48px;
     bottom: 0;
     overflow: auto;
 }
 
-.media-modal-close {
+.button-link.media-modal-close {
     cursor: pointer;
+    text-decoration: none;
 }
 
 .modal-content-wrap {

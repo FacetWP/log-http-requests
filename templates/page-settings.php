@@ -36,22 +36,17 @@ var LHR = {
     <div class="media-modal-content">
         <div class="media-frame">
             <div class="media-frame-title">
-                <h1><?php _e( 'HTTP Request Viewer', 'lhr' ); ?></h1>
-            </div>
-            <div class="media-frame-router">
-                <div class="media-router">
-                    <?php _e( 'Analyze the contents of each HTTP request.', 'fwp' ); ?>
-                </div>
+                <h1><?php _e( 'HTTP Request', 'lhr' ); ?></h1>
             </div>
             <div class="media-frame-content">
                 <div class="modal-content-wrap">
                     <div class="wrapper">
                         <div class="box">
-                            <h3>Request Args</h3>
+                            <h3>Request</h3>
                             <div class="http-request-args"></div>
                         </div>
                         <div class="box">
-                            <h3>HTTP Response</h3>
+                            <h3>Response</h3>
                             <div class="http-response"></div>
                         </div>
                     </div>
