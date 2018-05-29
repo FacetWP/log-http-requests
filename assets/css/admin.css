@@ -4,11 +4,8 @@
     font-size: 12px;
 }
 
-.widefat .field-url div {
-    width: 480px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.lhr-listing tbody tr:nth-child(even) td {
+    background-color: #f8f8f8;
 }
 
 .widefat .field-runtime,
