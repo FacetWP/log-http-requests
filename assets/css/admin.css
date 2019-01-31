@@ -18,6 +18,10 @@
     display: none;
 }
 
+.widefat .field-url {
+    word-break: break-word;
+}
+
 .widefat .field-runtime.warn {
     background-color: rgba(255, 235, 59, 0.2);
 }
