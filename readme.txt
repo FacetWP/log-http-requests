@@ -1,8 +1,8 @@
 === Log HTTP Requests ===
 Contributors: mgibbs189
 Tags: log, wp_http, requests, update checks, api
-Requires at least: 4.7
-Tested up to: 4.9.6
+Requires at least: 4.8
+Tested up to: 5.1
 Stable tag: trunk
 License: GPLv2
 
