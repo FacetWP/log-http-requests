@@ -26,6 +26,9 @@ This plugin logs all WP_HTTP requests and displays them in a table listing for e
 
 == Changelog ==
 
+= 1.0.4 =
+* Minor styling tweak
+
 = 1.0.3 =
 * Better visibility for long URLs
 
