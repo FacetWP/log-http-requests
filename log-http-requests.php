@@ -133,6 +133,14 @@ class Log_HTTP_Requests
             return;
         }
 
+        if ( ! apply_filters(
+                'lhr_should_log_host',
+                true,
+                wp_parse_url( $url, PHP_URL_HOST )
+        ) ) {
+            return;
+        }
+
         $wpdb->insert( $wpdb->prefix . 'lhr_log', array(
             'url' => $url,
             'request_args' => json_encode( $args ),
