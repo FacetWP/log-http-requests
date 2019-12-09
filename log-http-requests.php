@@ -133,13 +133,18 @@ class Log_HTTP_Requests
             return;
         }
 
-        $wpdb->insert( $wpdb->prefix . 'lhr_log', array(
+        // False to ignore current row
+        $log_data = apply_filters( 'lhr_log_data', [
             'url' => $url,
             'request_args' => json_encode( $args ),
             'response' => json_encode( $response ),
             'runtime' => ( microtime( true ) - $this->start_time ),
             'date_added' => current_time( 'mysql' )
-        ) );
+        ]);
+
+        if ( false !== $log_data ) {
+            $wpdb->insert( $wpdb->prefix . 'lhr_log', $log_data );
+        }
     }
 
 
