@@ -75,8 +75,9 @@ class Log_HTTP_Requests
         global $wpdb;
 
         $now = current_time( 'timestamp' );
-        $yesterday = date( 'Y-m-d H:i:s', strtotime( '-1 day', $now ) );
-        $wpdb->query( "DELETE FROM {$wpdb->prefix}lhr_log WHERE date_added < '$yesterday'" );
+        $expires = apply_filters( 'lhr_expiration_days', 1 );
+        $expires = date( 'Y-m-d H:i:s', strtotime( '-' . $expires . ' days', $now ) );
+        $wpdb->query( "DELETE FROM {$wpdb->prefix}lhr_log WHERE date_added < '$expires'" );
     }
 
 
