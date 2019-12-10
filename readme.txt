@@ -1,8 +1,8 @@
 === Log HTTP Requests ===
 Contributors: mgibbs189
 Tags: log, wp_http, requests, update checks, api
-Requires at least: 4.8
-Tested up to: 5.1
+Requires at least: 4.9
+Tested up to: 5.3
 Stable tag: trunk
 License: GPLv2
 
@@ -25,6 +25,10 @@ This plugin logs all WP_HTTP requests and displays them in a table listing for e
 2. Browse to the `Log HTTP Requests` menu to view log entries.
 
 == Changelog ==
+
+= 1.1 =
+* Added `lhr_log_data` hook to customize logged data (return FALSE to skip logging)
+* Added `lhr_expiration_days` hook
 
 = 1.0.4 =
 * Minor styling tweak

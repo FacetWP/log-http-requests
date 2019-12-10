@@ -2,7 +2,7 @@
 /*
 Plugin Name: Log HTTP Requests
 Description: Log all those pesky WP HTTP requests
-Version: 1.0.4
+Version: 1.1
 Author: FacetWP, LLC
 Author URI: https://facetwp.com/
 
@@ -34,7 +34,7 @@ class Log_HTTP_Requests
     function __construct() {
 
         // setup variables
-        define( 'LHR_VERSION', '1.0.4' );
+        define( 'LHR_VERSION', '1.1' );
         define( 'LHR_DIR', dirname( __FILE__ ) );
         define( 'LHR_URL', plugins_url( '', __FILE__ ) );
         define( 'LHR_BASENAME', plugin_basename( __FILE__ ) );
