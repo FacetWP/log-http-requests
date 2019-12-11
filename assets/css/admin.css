@@ -8,6 +8,7 @@
     background-color: #f8f8f8;
 }
 
+.widefat .field-status-code,
 .widefat .field-runtime,
 .widefat .field-date {
     width: 100px;

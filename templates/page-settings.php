@@ -20,6 +20,7 @@ var LHR = {
         <thead>
             <tr>
                 <td>URL</td>
+                <td>Status Code</td>
                 <td>Runtime (sec)</td>
                 <td>Date Added</td>
             </tr>
