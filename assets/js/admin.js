@@ -61,12 +61,18 @@
             $('.http-response').text(JSON.stringify(JSON.parse(data.response), null, 2));
             $('.media-modal').show();
             $('.media-modal-backdrop').show();
+            $(document).on('keydown.lhr-modal-close', function(e){
+                if (27 === e.keyCode) {
+                    $('.media-modal-close').trigger('click');
+                }
+            });
         });
 
         // Close modal window
         $(document).on('click', '.media-modal-close', function() {
             $('.media-modal').hide();
             $('.media-modal-backdrop').hide();
+            $(document).off('keydown.lhr-modal-close');
         });
 
         // Ajax
