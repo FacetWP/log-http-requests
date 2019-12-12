@@ -52,6 +52,7 @@ class LHR_Query
 
         foreach ( $results as $row ) {
             $row['runtime'] = round( $row['runtime'], 4 );
+            $row['date_raw'] = $row['date_added'];
             $row['date_added'] = LHR()->time_since( $row['date_added'] );
             $output[] = $row;
         }
