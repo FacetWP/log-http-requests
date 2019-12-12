@@ -51,7 +51,7 @@ class LHR_Query
         );
 
         foreach ( $results as $row ) {
-            $row['status_code'] = 'Unknown';
+            $row['status_code'] = '-';
             $response = json_decode( $row['response'], true );
             if ( ! empty( $response['response']['code'] ) ) {
                 $row['status_code'] = (int) $response['response']['code'];
