@@ -16,6 +16,28 @@ How long do [core / plugin / theme] update checks take to run? What data about m
 
 This plugin logs all WP_HTTP requests and displays them in a table listing for easy viewing. It also stores the runtime of each HTTP request.
 
+= Available Hooks =
+Customize the length (in days) before older log items are removed:
+
+<pre>
+add_filter( 'lhr_expiration_days', function( $days ) {
+    return 7; // default = 1
+});
+</pre>
+
+Don't log items from a specific hostname:
+
+<pre>
+add_filter( 'lhr_log_data', function( $data ) {
+    if ( false !== strpos( $data['url'], 'wordpress.org' ) ) {
+        return false;
+    }
+    return $data;
+});
+</pre>
+
+In the above example, the `$data` array keys correspond to columns within the `lhr_log` database table.
+
 = Important Links =
 * [Github →](https://github.com/FacetWP/log-http-requests)
 
