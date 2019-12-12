@@ -23,6 +23,7 @@
                         <td class="field-url">
                             <div><a href="javascript:;" data-id="` + idx + `">` + row.url + `</a></div>
                         </td>
+                        <td class="field-status-code">` + row.status_code + `</td>
                         <td class="field-runtime` + css_class + `">` + row.runtime + `</td>
                         <td class="field-date" title="` + row.date_raw + `">` + row.date_added + `</td>
                     </tr>
