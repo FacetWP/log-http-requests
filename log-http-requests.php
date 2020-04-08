@@ -82,7 +82,7 @@ class Log_HTTP_Requests
 
 
     function admin_menu() {
-        add_options_page( 'Log HTTP Requests', 'Log HTTP Requests', 'manage_options', 'log-http-requests', array( $this, 'settings_page' ) );
+        add_management_page( 'Log HTTP Requests', 'Log HTTP Requests', 'manage_options', 'log-http-requests', array( $this, 'settings_page' ) );
     }
 
 
@@ -92,7 +92,7 @@ class Log_HTTP_Requests
 
 
     function admin_scripts( $hook ) {
-        if ( 'settings_page_log-http-requests' == $hook ) {
+        if ( 'tools_page_log-http-requests' == $hook ) {
             wp_enqueue_script( 'lhr', LHR_URL . '/assets/js/admin.js', array( 'jquery' ) );
             wp_enqueue_style( 'lhr', LHR_URL . '/assets/css/admin.css' );
             wp_enqueue_style( 'media-views' );
