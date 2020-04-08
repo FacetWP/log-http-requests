@@ -2,7 +2,7 @@
 Contributors: mgibbs189
 Tags: log, wp_http, requests, update checks, api
 Requires at least: 4.9
-Tested up to: 5.3
+Tested up to: 5.4
 Stable tag: trunk
 License: GPLv2
 
@@ -44,7 +44,7 @@ In the above example, the `$data` array keys correspond to columns within the `l
 == Installation ==
 
 1. Download and activate the plugin.
-2. Browse to the `Log HTTP Requests` menu to view log entries.
+2. Browse to `Tools > Log HTTP Requests` to view log entries.
 
 == Changelog ==
 
