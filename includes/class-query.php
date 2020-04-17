@@ -51,14 +51,22 @@ class LHR_Query
         );
 
         foreach ( $results as $row ) {
-            $row['status_code'] = '-';
-            $response = json_decode( $row['response'], true );
-            if ( ! empty( $response['response']['code'] ) ) {
-                $row['status_code'] = (int) $response['response']['code'];
-            }
             $row['runtime'] = round( $row['runtime'], 4 );
-            $row['date_raw'] = $row['date_added'];
-            $row['date_added'] = LHR()->time_since( $row['date_added'] );
+            // del>>>
+            //$row['date_added'] = LHR()->time_since( $row['date_added'] );
+            // <<<del
+            // ins>>>
+            $url_parts = LHR()->split_url( $row['url'] );
+            $row['protocol'] = $url_parts[0];
+            $row['domain'] = $url_parts[1];
+            $row['path'] = $url_parts[2];
+            $row['query'] = LHR()->get_query_parameters($url_parts[3]);
+            $row['parameters'] = json_encode($url_parts[4]);
+            //$row['domain'] = LHR()->get_url_domain( $row['url'] );
+            //$row['url_parameters'] = json_encode(LHR()->get_url_parameters( $row['url'] ));
+            $row['url'] = LHR()->remove_url_parameters( $row['url'] );
+            $row['time_since'] = LHR()->time_since( $row['date_added'] );
+            // <<<ins
             $output[] = $row;
         }
 
