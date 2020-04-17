@@ -8,12 +8,21 @@
     background-color: #f8f8f8;
 }
 
-.widefat .field-status-code,
-.widefat .field-runtime,
-.widefat .field-date {
+.widefat .field-protocol {
+    width: 40px;
+}
+.widefat .field-domain, 
+.widefat .field-path,
+.widefat .field-query {
+    width: auto;
+}
+.widefat .field-runtime {
     width: 100px;
 }
-
+.widefat .field-date,
+.widefat .field-since {
+    width: 150px;
+}
 .widefat .field-args,
 .widefat .field-response {
     display: none;
@@ -27,16 +36,32 @@
     background-color: rgba(255, 235, 59, 0.2);
 }
 
-.widefat .field-runtime.error {
+.widefat .field-runtime.error, 
+.widefat .field-protocol.error {
     background-color: rgba(244, 67, 54, 0.2);
+    text-decoration: none !important;
+}
+
+.url-string {
+    font-family: monospace;
+    white-space: pre;
+    overflow: auto;
+    margin-bottom: 10px;
+}
+
+.url-parameters {
+    font-family: monospace;
+    white-space: pre;
+    overflow: auto;
+    border: 1px solid #ddd;
 }
 
 .http-request-args,
 .http-response {
-    max-height: 360px;
     font-family: monospace;
     white-space: pre;
     overflow: auto;
+    border: 1px solid #ddd;
 }
 
 /* pager */
@@ -61,9 +86,9 @@
 /* grid */
 
 .wrapper {
-  display: grid;
-  grid-template-columns: 50% 50%;
-  grid-gap: 10px;
+    display: grid;
+    grid-template-columns: 30% 35% 35%;
+    grid-gap: 10px;
 }
 
 /* modal */
