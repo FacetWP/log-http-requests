@@ -39,7 +39,7 @@ add_filter( 'lhr_log_data', function( $data ) {
 In the above example, the `$data` array keys correspond to columns within the `lhr_log` database table.
 
 = Important Links =
-* [Github →](https://github.com/FacetWP/log-http-requests)
+* [Github](https://github.com/FacetWP/log-http-requests)
 
 == Installation ==
 
@@ -49,11 +49,12 @@ In the above example, the `$data` array keys correspond to columns within the `l
 == Changelog ==
 
 = 1.2 =
-* Split url output into protocol, domain, path, and parameters (full url is shown on mouse-over)
+* Split url output into protocol, domain, path, and parameters 
 * Add full date column to output 
 * Show protocol column in red if unsecure http was used (instead of https)
 * Added display of url and parameters to detailed view
-* Use ESC key to exit detailed view
+* Added buttons to show previous or next request in detailed view
+* Use ESC key to exit and UP/DOWN keys to navigate between requests detailed view
 
 = 1.1 =
 * Added `lhr_log_data` hook to customize logged data (return FALSE to skip logging)
