@@ -35,8 +35,10 @@ var LHR = {
 
 <!-- Modal window -->
 
-<div class="media-modal">
+<div class="media-modal" data-id="">
     <button class="button-link media-modal-close"><span class="media-modal-icon"></span></button>
+    <button class="button-link media-modal-prev"><span class="media-modal-icon"></span></button>
+	<button class="button-link media-modal-next"><span class="media-modal-icon"></span></button>
     <div class="media-modal-content">
         <div class="media-frame">
             <div class="media-frame-title">
