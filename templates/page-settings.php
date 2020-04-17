@@ -19,10 +19,13 @@ var LHR = {
     <table class="widefat lhr-listing">
         <thead>
             <tr>
-                <td>URL</td>
-                <td>Status Code</td>
+                <td>Protocol</td>
+                <td>Domain</td>
+                <td>Path</td>
+                <td>Query</td>
                 <td>Runtime (sec)</td>
                 <td>Date Added</td>
+                <td>Time Since</td>
             </tr>
         </thead>
         <tbody></tbody>
@@ -41,7 +44,15 @@ var LHR = {
             </div>
             <div class="media-frame-content">
                 <div class="modal-content-wrap">
+					<div class="box">
+						<h3>URL</h3>
+						<div class="url-string"></div>
+					</div>
                     <div class="wrapper">
+						<div class="box box-url-parameters">
+							<h3>Parameters</h3>
+							<div class="url-parameters"></div>
+						</div>
                         <div class="box">
                             <h3>Request</h3>
                             <div class="http-request-args"></div>
