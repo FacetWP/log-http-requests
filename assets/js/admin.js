@@ -18,20 +18,21 @@
                     var runtime = parseFloat(row.runtime);
                     var css_class = (runtime > 1) ? ' warn' : '';
                     css_class = (runtime > 2) ? ' error' : css_class;
-                    var css_class_prot = (row.protocol == 'http://') ? ' error' : '';
+                    var css_class_prot = (row.protocol != 'http://' && row.protocol != 'https://') ? ' warn' : '';
+                    css_class_prot = (row.protocol == 'http://') ? ' error' : css_class_prot;
                     html += `
                     <tr>
                         <td class="field-protocol` + css_class_prot + `">
-                            <div><a href="javascript:;" data-id="` + idx + `" title="` + row.url + `">` + row.protocol + `</a></div>
+                            <div><a href="javascript:;" data-id="` + idx + `">` + row.protocol + `</a></div>
                         </td>
                         <td class="field-domain">
-                            <div><a href="javascript:;" data-id="` + idx + `" title="` + row.url + `">` + row.domain + `</a></div>
+                            <div><a href="javascript:;" data-id="` + idx + `">` + row.domain + `</a></div>
                         </td>
                         <td class="field-path">
-                            <div><a href="javascript:;" data-id="` + idx + `" title="` + row.url + `">` + row.path + `</a></div>
+                            <div><a href="javascript:;" data-id="` + idx + `">` + row.path + `</a></div>
                         </td>
                         <td class="field-query">
-                            <div><a href="javascript:;" data-id="` + idx + `" title="` + row.url + `">` + row.query + `</a></div>
+                            <div><a href="javascript:;" data-id="` + idx + `" title="` + row.query + `">` + row.short_query + `</a></div>
                         </td>
                         <td class="field-runtime` + css_class + `">` + row.runtime + `</td>
                         <td class="field-date">` + row.date_added + `</td>
@@ -65,10 +66,10 @@
         });
 
         // Open detail modal
-        $(document).on('click', '.field-query a, .field-protocol a, .field-domain a, .field-path a', function() {
-            var id = parseInt($(this).attr('data-id'));
+        function show_detail(id) {
+        	$('.media-modal').attr('data-id',id); 
             var data = LHR.response.rows[id];
-            $('.url-string').text(data.url);
+            $('.url-string').text(data.short_url);
             if (data.parameters != '[]') {
             	$('.url-parameters').text(JSON.stringify(JSON.parse(data.parameters), null, 2));
             	$('.wrapper').attr('style','grid-template-columns:30% 34% 34%');
@@ -82,20 +83,54 @@
             $('.http-response').text(JSON.stringify(JSON.parse(data.response), null, 2));
             $('.media-modal').show();
             $('.media-modal-backdrop').show();
-        });
+        }
+        
+        $(document).on('click', '.field-query a, .field-protocol a, .field-domain a, .field-path a', function() {
+            var id = parseInt($(this).attr('data-id'));
+            show_detail(id);
+         });
+
+        // Previous or next request
+        function prev_detail() {
+            var id = parseInt($('.media-modal').attr('data-id'));
+            if (id > 0) { 
+            	id = id - 1; 
+                show_detail(id);
+            }	
+        }
+
+        function next_detail() {
+            var id = parseInt($('.media-modal').attr('data-id'));
+            if (id < 49) { 
+            	id = id + 1; 
+                show_detail(id);
+            }	
+        }
+        
+        $(document).on('click', '.media-modal-prev', function() { prev_detail(); } );
+
+        $(document).on('click', '.media-modal-next', function() { next_detail(); } );
 
         // Close modal window
-        $(document).on('click', '.media-modal-close', function() {
+        function close_detail () {
             $('.media-modal').hide();
-            $('.media-modal-backdrop').hide();
-        });
+            $('.media-modal-backdrop').hide();        	
+        }
+        
+        $(document).on('click', '.media-modal-close', function() { close_detail(); } );
 
-		// Close on escape key
+		// Keyboard events
 		$(document).keydown(function(event) {
-		  if (event.keyCode == 27) {
-            $('.media-modal').hide();
-            $('.media-modal-backdrop').hide();
-		  }
+			if($(".media-modal").is(":visible")) {
+				if (event.keyCode == 27) {  //ESC
+					close_detail();
+				} else if (event.keyCode == 38) { //UP
+					prev_detail();
+				} else if (event.keyCode == 40) { //DOWN
+		            next_detail();
+				}
+	            return false;
+			}
 		});
 
         // Ajax
