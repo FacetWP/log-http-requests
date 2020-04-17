@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Log HTTP Requests
  * Description: Log all those pesky WP HTTP requests
- * Version: 1.2
+ * Version: 1.1
  * Author: FacetWP, LLC
  * Author URI: https://facetwp.com/
  *
@@ -36,7 +36,7 @@ class Log_HTTP_Requests
     {
 
         // setup variables
-        define('LHR_VERSION', '1.2');
+        define('LHR_VERSION', '1.1');
         define('LHR_DIR', dirname(__FILE__));
         define('LHR_URL', plugins_url('', __FILE__));
         define('LHR_BASENAME', plugin_basename(__FILE__));
@@ -201,81 +201,44 @@ class Log_HTTP_Requests
         }
     }
 
-    function split_url($uri)
+    function split_url($url)
     {
-        if (0 === stripos($uri, 'http://')) {
-            $protocol = 'http://';
-            $uri = substr($uri, 7);
-        } elseif (0 === stripos($uri, 'https://')) {
-            $protocol = 'https://';
-            $uri = substr($uri, 8);
-        } elseif (0 === stripos($uri, ':')) {
-            list ($protocol, $uri) = explode(':', $uri, 2);
-            $protocol .= ':';
+        $parsed_url = parse_url($url);
+
+        $scheme = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
+        $host = isset($parsed_url['host']) ? $parsed_url['host'] : '';
+        $port = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
+        $user = isset($parsed_url['user']) ? $parsed_url['user'] : '';
+        $pass = isset($parsed_url['pass']) ? ':' . $parsed_url['pass'] : '';
+        $pass = ($user || $pass) ? "$pass@" : '';
+        $domain = $host . $port . $user . $pass;
+        $path = isset($parsed_url['path']) ? $parsed_url['path'] : '';
+        $query = isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '';
+        $fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
+        $query .= $fragment;
+
+        if (strlen($query) > 100) {
+            $short_query = substr($query, 0, 100) . '...';
         } else {
-            $protocol = '';
+            $short_query = $query;
         }
 
-        if (strpos($uri, '/') !== false) {
-            list ($domain, $uri) = explode('/', $uri, 2);
-            $uri = '/' . $uri;
-        } else {
-            $domain = $uri;
-            $uri = '';
+        $short_url = $scheme . $domain . $path;
+        if (! empty($query)) {
+            $short_url .= '?...';
         }
 
-        if (strpos($uri, '?') !== false) {
-            list ($path, $query) = explode('?', $uri, 2);
-            $path .= '?';
-        } elseif ($protocol || strpos($uri, '=') === false) {
-            $path = $uri . '?';
-            $query = '';
-        } else {
-            $path = '';
-            $query = $uri;
-        }
         wp_parse_str($query, $parameters);
 
         return array(
-            $protocol,
+            $scheme,
             $domain,
             $path,
             $query,
-            $parameters
+            $short_query,
+            $parameters,
+            $short_url
         );
-    }
-
-    function get_query_parameters($query)
-    {
-        if (strpos($query, '&') !== false) {
-            list ($param1, $query) = explode('&', $query, 2);
-            $ret = $param1;
-            if (strpos($query, '&') !== false) {
-                list ($param2, $query) = explode('&', $query, 2);
-                $ret .= '&' . $param2;
-                if (strpos($query, '&') !== false) {
-                    $ret .= '&...';
-                }
-            }
-            if (strlen($ret) > 100) {
-                $ret = substr($ret, 0, 100) . '...';
-            }
-            return $ret;
-        } else {
-            return $query;
-        }
-    }
-
-    function remove_url_parameters($url)
-    {
-        if (strpos($url, '?') !== false) {
-            list ($base, $query) = explode('?', $url, 2);
-            $base .= '?...';
-
-            return $base;
-        } else {
-            return $url;
-        }
     }
 }
 
