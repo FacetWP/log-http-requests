@@ -22,16 +22,16 @@
                     html += `
                     <tr>
                         <td class="field-protocol` + css_class_prot + `">
-                            <div><a href="javascript:;" data-id="` + idx + `">` + row.protocol + `</a></div>
+                            <div><a href="javascript:;" data-id="` + idx + `" title="` + row..url + `">` + row.protocol + `</a></div>
                         </td>
                         <td class="field-domain">
-                            <div><a href="javascript:;" data-id="` + idx + `">` + row.domain + `</a></div>
+                            <div><a href="javascript:;" data-id="` + idx + `" title="` + row..url + `">` + row.domain + `</a></div>
                         </td>
                         <td class="field-path">
-                            <div><a href="javascript:;" data-id="` + idx + `">` + row.path + `</a></div>
+                            <div><a href="javascript:;" data-id="` + idx + `" title="` + row..url + `">` + row.path + `</a></div>
                         </td>
                         <td class="field-query">
-                            <div><a href="javascript:;" data-id="` + idx + `">` + row.query + `</a></div>
+                            <div><a href="javascript:;" data-id="` + idx + `" title="` + row..url + `">` + row.query + `</a></div>
                         </td>
                         <td class="field-runtime` + css_class + `">` + row.runtime + `</td>
                         <td class="field-date">` + row.date_added + `</td>
