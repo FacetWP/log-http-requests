@@ -2,33 +2,43 @@
 
 class LHR_Query
 {
+
     public $wpdb;
+
     public $sql;
+
     public $pager_args;
 
-
-    function __construct() {
+    function __construct()
+    {
         $this->wpdb = $GLOBALS['wpdb'];
     }
 
-
-    function get_results( $args ) {
+    function get_results($args)
+    {
         $defaults = array(
-            'page'          => 1,
-            'per_page'      => 50,
-            'orderby'       => 'date_added',
-            'order'         => 'DESC',
-            'search'        => '',
+            'page' => 1,
+            'per_page' => 50,
+            'orderby' => 'date_added',
+            'order' => 'DESC',
+            'search' => ''
         );
 
-        $args = array_merge( $defaults, $args );
+        $args = array_merge($defaults, $args);
 
         $output = array();
-        $orderby = in_array( $args['orderby'], array( 'url', 'runtime', 'date_added' ) ) ? $args['orderby'] : 'date_added';
-        $order = in_array( $args['order'], array( 'ASC', 'DESC' ) ) ? $args['order'] : 'DESC';
+        $orderby = in_array($args['orderby'], array(
+            'url',
+            'runtime',
+            'date_added'
+        )) ? $args['orderby'] : 'date_added';
+        $order = in_array($args['order'], array(
+            'ASC',
+            'DESC'
+        )) ? $args['order'] : 'DESC';
         $page = (int) $args['page'];
         $per_page = (int) $args['per_page'];
-        $limit = ( ( $page - 1 ) * $per_page ) . ',' . $per_page;
+        $limit = (($page - 1) * $per_page) . ',' . $per_page;
 
         $this->sql = "
             SELECT
@@ -38,41 +48,42 @@ class LHR_Query
             ORDER BY $orderby $order, id DESC
             LIMIT $limit
         ";
-        $results = $this->wpdb->get_results( $this->sql, ARRAY_A );
+        $results = $this->wpdb->get_results($this->sql, ARRAY_A);
 
-        $total_rows = (int) $this->wpdb->get_var( "SELECT FOUND_ROWS()" );
-        $total_pages = ceil( $total_rows / $per_page );
+        $total_rows = (int) $this->wpdb->get_var("SELECT FOUND_ROWS()");
+        $total_pages = ceil($total_rows / $per_page);
 
         $this->pager_args = array(
-            'page'          => $page,
-            'per_page'      => $per_page,
-            'total_rows'    => $total_rows,
-            'total_pages'   => $total_pages,
+            'page' => $page,
+            'per_page' => $per_page,
+            'total_rows' => $total_rows,
+            'total_pages' => $total_pages
         );
 
-        foreach ( $results as $row ) {
-            $row['runtime'] = round( $row['runtime'], 4 );
-            $url_parts = LHR()->split_url( $row['url'] );
+        foreach ($results as $row) {
+            $row['runtime'] = round($row['runtime'], 4);
+            $url_parts = LHR()->split_url($row['url']);
             $row['protocol'] = $url_parts[0];
             $row['domain'] = $url_parts[1];
             $row['path'] = $url_parts[2];
-            $row['query'] = LHR()->get_query_parameters($url_parts[3]);
-            $row['parameters'] = json_encode($url_parts[4]);
-            $row['url'] = LHR()->remove_url_parameters( $row['url'] );
-            $row['time_since'] = LHR()->time_since( $row['date_added'] );
+            $row['query'] = $url_parts[3];
+            $row['short_query'] = $url_parts[4];
+            $row['parameters'] = json_encode($url_parts[5]);
+            $row['short_url'] = $url_parts[6];
+            $row['time_since'] = LHR()->time_since($row['date_added']);
             $output[] = $row;
         }
 
         return $output;
     }
 
-
-    function truncate_table() {
-        $this->wpdb->query( "TRUNCATE TABLE {$this->wpdb->prefix}lhr_log" );
+    function truncate_table()
+    {
+        $this->wpdb->query("TRUNCATE TABLE {$this->wpdb->prefix}lhr_log");
     }
 
-
-    function paginate() {
+    function paginate()
+    {
         $params = $this->pager_args;
 
         $output = '';
@@ -82,16 +93,16 @@ class LHR_Query
         $total_pages = (int) $params['total_pages'];
 
         // Only show pagination when > 1 page
-        if ( 1 < $total_pages ) {
+        if (1 < $total_pages) {
 
-            if ( 3 < $page ) {
+            if (3 < $page) {
                 $output .= '<a class="lhr-page first-page" data-page="1">&lt;&lt;</a>';
             }
-            if ( 1 < ( $page - 10 ) ) {
+            if (1 < ($page - 10)) {
                 $output .= '<a class="lhr-page" data-page="' . ($page - 10) . '">' . ($page - 10) . '</a>';
             }
-            for ( $i = 2; $i > 0; $i-- ) {
-                if ( 0 < ( $page - $i ) ) {
+            for ($i = 2; $i > 0; $i --) {
+                if (0 < ($page - $i)) {
                     $output .= '<a class="lhr-page" data-page="' . ($page - $i) . '">' . ($page - $i) . '</a>';
                 }
             }
@@ -99,15 +110,15 @@ class LHR_Query
             // Current page
             $output .= '<a class="lhr-page active" data-page="' . $page . '">' . $page . '</a>';
 
-            for ( $i = 1; $i <= 2; $i++ ) {
-                if ( $total_pages >= ( $page + $i ) ) {
+            for ($i = 1; $i <= 2; $i ++) {
+                if ($total_pages >= ($page + $i)) {
                     $output .= '<a class="lhr-page" data-page="' . ($page + $i) . '">' . ($page + $i) . '</a>';
                 }
             }
-            if ( $total_pages > ( $page + 10 ) ) {
+            if ($total_pages > ($page + 10)) {
                 $output .= '<a class="lhr-page" data-page="' . ($page + 10) . '">' . ($page + 10) . '</a>';
             }
-            if ( $total_pages > ( $page + 2 ) ) {
+            if ($total_pages > ($page + 2)) {
                 $output .= '<a class="lhr-page last-page" data-page="' . $total_pages . '">&gt;&gt;</a>';
             }
         }
