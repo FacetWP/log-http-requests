@@ -49,7 +49,8 @@ In the above example, the `$data` array keys correspond to columns within the `l
 == Changelog ==
 
 = 1.2 =
-* Split output into protocol, domain, path, and parameters 
+* Split url output into protocol, domain, path, and parameters 
+* Add full date column to output 
 * Show protocol column in red if unsecure http was used (instead of https)
 * Added display of url and parameters to detailed view
 * Use ESC key to exit detailed view
