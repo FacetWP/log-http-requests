@@ -11,18 +11,22 @@
 .widefat .field-protocol {
     width: 40px;
 }
+
 .widefat .field-domain, 
 .widefat .field-path,
 .widefat .field-query {
     width: auto;
 }
+
 .widefat .field-runtime {
     width: 100px;
 }
+
 .widefat .field-date,
 .widefat .field-since {
     width: 150px;
 }
+
 .widefat .field-args,
 .widefat .field-response {
     display: none;
@@ -39,6 +43,9 @@
 .widefat .field-runtime.error, 
 .widefat .field-protocol.error {
     background-color: rgba(244, 67, 54, 0.2);
+}
+
+.widefat .field-protocol.error a {
     text-decoration: none !important;
 }
 
