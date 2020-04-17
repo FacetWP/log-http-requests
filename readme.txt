@@ -1,5 +1,5 @@
 === Log HTTP Requests ===
-Contributors: mgibbs189
+Contributors: mgibbs189, marcissimus
 Tags: log, wp_http, requests, update checks, api
 Requires at least: 4.9
 Tested up to: 5.4
