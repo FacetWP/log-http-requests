@@ -48,6 +48,14 @@ In the above example, the `$data` array keys correspond to columns within the `l
 
 == Changelog ==
 
+= 1.2 =
+* Moved "Log HTTP Requests" to the `Tools` menu (props @aaemnnosttv)
+* Added "Status" column to show HTTP response code (props @danielbachhuber)
+* Added prev/next browsing to the detail modal (props @marcissimus)
+* Added keyboard support (up, down, esc) to the detail modal (props @marcissimus)
+* Added raw timestamp to "Date Added" column on hover
+* Added hook docs to the readme
+
 = 1.1 =
 * Added `lhr_log_data` hook to customize logged data (return FALSE to skip logging)
 * Added `lhr_expiration_days` hook
