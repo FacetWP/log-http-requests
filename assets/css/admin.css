@@ -33,7 +33,7 @@
 
 .http-request-args,
 .http-response {
-    max-height: 360px;
+    max-height: 300px;
     font-family: monospace;
     white-space: pre;
     overflow: auto;
@@ -73,6 +73,11 @@
     display: none;
 }
 
+.media-modal.open,
+.media-modal-backdrop.open {
+    display: block;
+}
+
 .media-frame-title,
 .media-frame-content {
     left: 0;
@@ -91,6 +96,22 @@
 .button-link.media-modal-close {
     cursor: pointer;
     text-decoration: none;
+}
+
+.button-link.media-modal-close.prev {
+    margin-right: 60px;
+}
+
+.button-link.media-modal-close.next {
+    margin-right: 30px;
+}
+
+.media-modal-close.prev .media-modal-icon::before {
+    content: "\f342";
+}
+
+.media-modal-close.next .media-modal-icon::before {
+    content: "\f346";
 }
 
 .modal-content-wrap {

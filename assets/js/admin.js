@@ -48,6 +48,27 @@
             }, 'json');
         }
 
+        LHR.show_details = function(action) {
+            var id = LHR.active_id;
+
+            if ('next' == action && id < LHR.response.rows.length - 1) {
+                id = id + 1;
+            }
+            else if ('prev' == action && id > 0) {
+                id = id - 1;
+            }
+
+            LHR.active_id = id;
+
+            var data = LHR.response.rows[id];
+            $('.http-url').text(data.url);
+            $('.http-request-id').text(id);
+            $('.http-request-args').text(JSON.stringify(JSON.parse(data.request_args), null, 2));
+            $('.http-response').text(JSON.stringify(JSON.parse(data.response), null, 2));
+            $('.media-modal').addClass('open');
+            $('.media-modal-backdrop').addClass('open');  
+        }
+
         // Page change
         $(document).on('click', '.lhr-page:not(.active)', function() {
             LHR.query_args.page = parseInt($(this).attr('data-page'));
@@ -56,24 +77,44 @@
 
         // Open detail modal
         $(document).on('click', '.field-url a', function() {
-            var id = parseInt($(this).attr('data-id'));
-            var data = LHR.response.rows[id];
-            $('.http-request-args').text(JSON.stringify(JSON.parse(data.request_args), null, 2));
-            $('.http-response').text(JSON.stringify(JSON.parse(data.response), null, 2));
-            $('.media-modal').show();
-            $('.media-modal-backdrop').show();
-            $(document).on('keydown.lhr-modal-close', function(e){
-                if (27 === e.keyCode) {
-                    $('.media-modal-close').trigger('click');
-                }
-            });
+            LHR.active_id = parseInt($(this).attr('data-id'));
+            LHR.show_details('curr');
         });
 
         // Close modal window
         $(document).on('click', '.media-modal-close', function() {
-            $('.media-modal').hide();
-            $('.media-modal-backdrop').hide();
+            var $this = $(this);
+
+            if ($this.hasClass('prev') || $this.hasClass('next')) {
+                var action = $this.hasClass('prev') ? 'prev' : 'next';
+                LHR.show_details(action);
+                return;
+            }
+
+            $('.media-modal').removeClass('open');
+            $('.media-modal-backdrop').removeClass('open');
             $(document).off('keydown.lhr-modal-close');
+        });
+
+        $(document).keydown(function(e) {
+
+            if (! $('.media-modal').hasClass('open')) {
+                return;
+            }
+
+            if (-1 < $.inArray(e.keyCode, [27, 38, 40])) {
+                e.preventDefault();
+
+                if (27 == e.keyCode) { // esc
+                    $('.media-modal-close').click();
+                }
+                else if (38 == e.keyCode) { // up
+                    $('.media-modal-close.prev').click();
+                }
+                else if (40 == e.keyCode) { // down
+                    $('.media-modal-close.next').click();
+                }
+            }
         });
 
         // Ajax

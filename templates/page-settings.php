@@ -20,8 +20,8 @@ var LHR = {
         <thead>
             <tr>
                 <td>URL</td>
-                <td>Status Code</td>
-                <td>Runtime (sec)</td>
+                <td title="HTTP response code">Status</td>
+                <td title="seconds">Runtime</td>
                 <td>Date Added</td>
             </tr>
         </thead>
@@ -33,6 +33,8 @@ var LHR = {
 <!-- Modal window -->
 
 <div class="media-modal">
+    <button class="button-link media-modal-close prev"><span class="media-modal-icon"></span></button>
+    <button class="button-link media-modal-close next"><span class="media-modal-icon"></span></button>
     <button class="button-link media-modal-close"><span class="media-modal-icon"></span></button>
     <div class="media-modal-content">
         <div class="media-frame">
@@ -41,6 +43,11 @@ var LHR = {
             </div>
             <div class="media-frame-content">
                 <div class="modal-content-wrap">
+                    <h3>URL</h3>
+                    <div>
+                        [<span class="http-request-id"></span>]
+                        <span class="http-url"></span>
+                    </div>
                     <div class="wrapper">
                         <div class="box">
                             <h3>Request</h3>
