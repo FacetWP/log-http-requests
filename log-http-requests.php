@@ -39,14 +39,14 @@ class Log_HTTP_Requests
         define( 'LHR_URL', plugins_url( '', __FILE__ ) );
         define( 'LHR_BASENAME', plugin_basename( __FILE__ ) );
 
-        add_action( 'init', array( $this, 'init' ) );
-        add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-        add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
-        add_filter( 'http_request_args', array( $this, 'start_timer' ) );
-        add_action( 'http_api_debug', array( $this, 'capture_request' ), 10, 5 );
-        add_action( 'lhr_cleanup_cron', array( $this, 'cleanup' ) );
-        add_action( 'wp_ajax_lhr_query', array( $this, 'lhr_query' ) );
-        add_action( 'wp_ajax_lhr_clear', array( $this, 'lhr_clear' ) );
+        add_action( 'init', [ $this, 'init' ] );
+        add_action( 'admin_menu', [ $this, 'admin_menu' ] );
+        add_action( 'admin_enqueue_scripts', [ $this, 'admin_scripts' ] );
+        add_filter( 'http_request_args', [ $this, 'start_timer' ] );
+        add_action( 'http_api_debug', [ $this, 'capture_request' ], 10, 5 );
+        add_action( 'lhr_cleanup_cron', [ $this, 'cleanup' ] );
+        add_action( 'wp_ajax_lhr_query', [ $this, 'lhr_query' ] );
+        add_action( 'wp_ajax_lhr_clear', [ $this, 'lhr_clear' ] );
     }
 
 
@@ -82,7 +82,7 @@ class Log_HTTP_Requests
 
 
     function admin_menu() {
-        add_management_page( 'Log HTTP Requests', 'Log HTTP Requests', 'manage_options', 'log-http-requests', array( $this, 'settings_page' ) );
+        add_management_page( 'Log HTTP Requests', 'Log HTTP Requests', 'manage_options', 'log-http-requests', [ $this, 'settings_page' ] );
     }
 
 
@@ -93,7 +93,7 @@ class Log_HTTP_Requests
 
     function admin_scripts( $hook ) {
         if ( 'tools_page_log-http-requests' == $hook ) {
-            wp_enqueue_script( 'lhr', LHR_URL . '/assets/js/admin.js', array( 'jquery' ) );
+            wp_enqueue_script( 'lhr', LHR_URL . '/assets/js/admin.js', [ 'jquery' ] );
             wp_enqueue_style( 'lhr', LHR_URL . '/assets/css/admin.css' );
             wp_enqueue_style( 'media-views' );
         }
@@ -105,10 +105,10 @@ class Log_HTTP_Requests
 
         $args = $_POST['data'];
 
-        $output = array(
+        $output = [
             'rows'  => LHR()->query->get_results( $args ),
             'pager' => LHR()->query->paginate()
-        );
+        ];
 
         wp_send_json( $output );
     }

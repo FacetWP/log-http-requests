@@ -13,19 +13,19 @@ class LHR_Query
 
 
     function get_results( $args ) {
-        $defaults = array(
+        $defaults = [
             'page'          => 1,
             'per_page'      => 50,
             'orderby'       => 'date_added',
             'order'         => 'DESC',
             'search'        => '',
-        );
+        ];
 
         $args = array_merge( $defaults, $args );
 
-        $output = array();
-        $orderby = in_array( $args['orderby'], array( 'url', 'runtime', 'date_added' ) ) ? $args['orderby'] : 'date_added';
-        $order = in_array( $args['order'], array( 'ASC', 'DESC' ) ) ? $args['order'] : 'DESC';
+        $output = [];
+        $orderby = in_array( $args['orderby'], [ 'url', 'runtime', 'date_added' ] ) ? $args['orderby'] : 'date_added';
+        $order = in_array( $args['order'], [ 'ASC', 'DESC' ] ) ? $args['order'] : 'DESC';
         $page = (int) $args['page'];
         $per_page = (int) $args['per_page'];
         $limit = ( ( $page - 1 ) * $per_page ) . ',' . $per_page;
@@ -43,12 +43,12 @@ class LHR_Query
         $total_rows = (int) $this->wpdb->get_var( "SELECT FOUND_ROWS()" );
         $total_pages = ceil( $total_rows / $per_page );
 
-        $this->pager_args = array(
+        $this->pager_args = [
             'page'          => $page,
             'per_page'      => $per_page,
             'total_rows'    => $total_rows,
             'total_pages'   => $total_pages,
-        );
+        ];
 
         foreach ( $results as $row ) {
             $row['status_code'] = '-';
