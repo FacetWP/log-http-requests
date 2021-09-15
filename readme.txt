@@ -2,7 +2,7 @@
 Contributors: mgibbs189
 Tags: log, wp_http, requests, update checks, api
 Requires at least: 4.9
-Tested up to: 5.7.2
+Tested up to: 5.8.1
 Stable tag: trunk
 License: GPLv2
 
@@ -48,9 +48,12 @@ In the above example, the `$data` array keys correspond to columns within the `l
 
 == Changelog ==
 
+= 1.3.1 =
+* Ensured compatibility with WP 5.8
+
 = 1.3 =
 * Minor PHP cleanup
-* Ensured compatibility with WP 5.7.x
+* Ensured compatibility with WP 5.7
 
 = 1.2 =
 * Moved "Log HTTP Requests" to the `Tools` menu (props @aaemnnosttv)

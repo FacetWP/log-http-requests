@@ -2,11 +2,11 @@
 /*
 Plugin Name: Log HTTP Requests
 Description: Log all those pesky WP HTTP requests
-Version: 1.3
+Version: 1.3.1
 Author: FacetWP, LLC
 Author URI: https://facetwp.com/
 
-Copyright 2019 FacetWP, LLC
+Copyright 2021 FacetWP, LLC
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -34,7 +34,7 @@ class Log_HTTP_Requests
     function __construct() {
 
         // setup variables
-        define( 'LHR_VERSION', '1.3' );
+        define( 'LHR_VERSION', '1.3.1' );
         define( 'LHR_DIR', dirname( __FILE__ ) );
         define( 'LHR_URL', plugins_url( '', __FILE__ ) );
         define( 'LHR_BASENAME', plugin_basename( __FILE__ ) );
