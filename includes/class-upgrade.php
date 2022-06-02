@@ -32,8 +32,8 @@ class LHR_Upgrade
             runtime VARCHAR(64),
             date_added DATETIME,
             PRIMARY KEY (id)
-        ) DEFAULT CHARSET=utf8";
-        dbDelta( $sql );
+        ) DEFAULT CHARSET=utf8mb4";
+        $wpdb->query( $sql );
     }
 
 
