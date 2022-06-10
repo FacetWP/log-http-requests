@@ -42,6 +42,7 @@ class Log_HTTP_Requests
         add_action( 'init', [ $this, 'init' ] );
         add_action( 'admin_menu', [ $this, 'admin_menu' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'admin_scripts' ] );
+        add_filter( 'plugin_action_links_' . LHR_BASENAME, [ $this, 'plugins_page_link' ] );
         add_filter( 'http_request_args', [ $this, 'start_timer' ] );
         add_action( 'http_api_debug', [ $this, 'capture_request' ], 10, 5 );
         add_action( 'lhr_cleanup_cron', [ $this, 'cleanup' ] );
@@ -99,6 +100,12 @@ class Log_HTTP_Requests
         }
     }
 
+
+    function plugins_page_link( $action_links ) {
+        $settings_page_url = admin_url( "tools.php?page=log-http-requests" );
+        array_unshift( $action_links, '<a href="' . esc_url( $settings_page_url ) . '">' . __( 'View Requests Log', 'log-http-requests' ) . '</a>' );
+        return $action_links;
+    }
 
     function lhr_query() {
         check_ajax_referer( 'lhr_nonce' );
