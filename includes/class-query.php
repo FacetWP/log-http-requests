@@ -59,6 +59,7 @@ class LHR_Query
             $row['runtime'] = round( $row['runtime'], 4 );
             $row['date_raw'] = $row['date_added'];
             $row['date_added'] = LHR()->time_since( $row['date_added'] );
+            $row['url'] = esc_url( $row['url'] );
             $output[] = $row;
         }
 
