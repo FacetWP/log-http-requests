@@ -1,8 +1,8 @@
 === Log HTTP Requests ===
 Contributors: mgibbs189
 Tags: log, wp_http, requests, update checks, api
-Requires at least: 4.9
-Tested up to: 5.8.1
+Requires at least: 5.0
+Tested up to: 6.0.1
 Stable tag: trunk
 License: GPLv2
 
@@ -47,6 +47,9 @@ In the above example, the `$data` array keys correspond to columns within the `l
 2. Browse to `Tools > Log HTTP Requests` to view log entries.
 
 == Changelog ==
+
+= 1.3.2 =
+* Escaped URL field to prevent possible XSS (props Bishop Fox)
 
 = 1.3.1 =
 * Ensured compatibility with WP 5.8
