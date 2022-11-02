@@ -100,13 +100,20 @@ class Log_HTTP_Requests
     }
 
 
-    function lhr_query() {
-        check_ajax_referer( 'lhr_nonce' );
+    function validate() {
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_die();
+        }
 
-        $args = $_POST['data'];
+        check_ajax_referer( 'lhr_nonce' );
+    }
+
+
+    function lhr_query() {
+        $this->validate();
 
         $output = [
-            'rows'  => LHR()->query->get_results( $args ),
+            'rows'  => LHR()->query->get_results( $_POST['data'] ),
             'pager' => LHR()->query->paginate()
         ];
 
@@ -115,7 +122,7 @@ class Log_HTTP_Requests
 
 
     function lhr_clear() {
-        check_ajax_referer( 'lhr_nonce' );
+        $this->validate();
 
         LHR()->query->truncate_table();
     }
