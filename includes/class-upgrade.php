@@ -1,5 +1,6 @@
 <?php
 
+#[AllowDynamicProperties]
 class LHR_Upgrade
 {
     function __construct() {
