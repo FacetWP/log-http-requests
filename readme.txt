@@ -2,7 +2,7 @@
 Contributors: mgibbs189
 Tags: log, wp_http, requests, update checks, api
 Requires at least: 5.0
-Tested up to: 6.1
+Tested up to: 6.2.2
 Stable tag: trunk
 License: GPLv2
 
@@ -47,6 +47,9 @@ In the above example, the `$data` array keys correspond to columns within the `l
 2. Browse to `Tools > Log HTTP Requests` to view log entries.
 
 == Changelog ==
+
+= 1.4.1
+* Fixed PHP8 deprecation notices
 
 = 1.4 =
 * Added extra ajax role validation (props pluginvulnerabilities.com)
