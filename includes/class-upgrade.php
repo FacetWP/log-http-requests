@@ -2,6 +2,9 @@
 
 class LHR_Upgrade
 {
+    public $version;
+    public $last_version;
+
     function __construct() {
         $this->version = LHR_VERSION;
         $this->last_version = get_option( 'lhr_version' );
