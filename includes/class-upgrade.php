@@ -26,21 +26,42 @@ class LHR_Upgrade
     private function clean_install() {
         global $wpdb;
 
-        $sql = "
-        CREATE TABLE IF NOT EXISTS {$wpdb->prefix}lhr_log (
-            id BIGINT unsigned not null auto_increment,
-            url TEXT,
-            request_args MEDIUMTEXT,
-            response MEDIUMTEXT,
-            runtime VARCHAR(64),
-            date_added DATETIME,
-            PRIMARY KEY (id)
-        ) DEFAULT CHARSET=utf8mb4";
-        $wpdb->query( $sql );
-    }
+        $sql =
+            "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}lhr_log (
+                id BIGINT unsigned not null auto_increment,
+                url TEXT,
+                request_args MEDIUMTEXT,
+                response MEDIUMTEXT,
+                runtime VARCHAR(64),
+                referrer TEXT null,
+                referrer_args MEDIUMTEXT null,
+                date_added DATETIME,
+                PRIMARY KEY  (id),
+                KEY date_added (date_added)
+            ) COLLATE {$wpdb->collate};";
 
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+        dbDelta( $sql );
+    }
 
     private function run_upgrade() {
         global $wpdb;
+
+        $sql =
+            "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}lhr_log (
+                id BIGINT unsigned not null auto_increment,
+                url TEXT,
+                request_args MEDIUMTEXT,
+                response MEDIUMTEXT,
+                runtime VARCHAR(64),
+                referrer TEXT null,
+                referrer_args MEDIUMTEXT null,
+                date_added DATETIME,
+                PRIMARY KEY  (id),
+                KEY date_added (date_added)
+            ) COLLATE {$wpdb->collate};";
+
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+        dbDelta( $sql );
     }
 }
