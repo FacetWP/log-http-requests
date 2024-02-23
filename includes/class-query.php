@@ -33,7 +33,7 @@ class LHR_Query
         $this->sql = "
             SELECT
                 SQL_CALC_FOUND_ROWS
-                id, url, request_args, response, runtime, date_added
+                id, url, request_args, referrer, referrer_args, response, runtime, date_added
             FROM {$this->wpdb->prefix}lhr_log
             ORDER BY $orderby $order, id DESC
             LIMIT $limit
@@ -60,6 +60,8 @@ class LHR_Query
             $row['date_raw'] = $row['date_added'];
             $row['date_added'] = LHR()->time_since( $row['date_added'] );
             $row['url'] = esc_url( $row['url'] );
+            $row['referrer'] = esc_url( $row['referrer'] );
+            $row['referrer_args'] = json_decode( $row['referrer_args'] );
             $output[] = $row;
         }
 

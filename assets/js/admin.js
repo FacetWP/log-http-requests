@@ -20,9 +20,10 @@
                     css_class = (runtime > 2) ? ' error' : css_class;
                     html += `
                     <tr>
-                        <td class="field-url">
-                            <div><a href="javascript:;" data-id="` + idx + `">` + row.url + `</a></div>
-                        </td>
+                    <td class="field-url">
+                        <div><a href="javascript:;" data-id="` + idx + `">` + row.url + `</a></div>
+                    </td>
+                        <td class="field-referrer">` + row.referrer + `</div></td>
                         <td class="field-status-code">` + row.status_code + `</td>
                         <td class="field-runtime` + css_class + `">` + row.runtime + `</td>
                         <td class="field-date" title="` + row.date_raw + `">` + row.date_added + `</td>
@@ -66,7 +67,7 @@
             $('.http-request-args').text(JSON.stringify(JSON.parse(data.request_args), null, 2));
             $('.http-response').text(JSON.stringify(JSON.parse(data.response), null, 2));
             $('.media-modal').addClass('open');
-            $('.media-modal-backdrop').addClass('open');  
+            $('.media-modal-backdrop').addClass('open');
         }
 
         // Page change

@@ -26,6 +26,7 @@ defined( 'ABSPATH' ) or exit;
 
 class Log_HTTP_Requests
 {
+    /** @var \LHR_Query */
     public $query;
     public $start_time;
     public static $instance;
@@ -34,7 +35,7 @@ class Log_HTTP_Requests
     function __construct() {
 
         // setup variables
-        define( 'LHR_VERSION', '1.4.1' );
+        define( 'LHR_VERSION', '1.4.2' );
         define( 'LHR_DIR', dirname( __FILE__ ) );
         define( 'LHR_URL', plugins_url( '', __FILE__ ) );
         define( 'LHR_BASENAME', plugin_basename( __FILE__ ) );
@@ -49,7 +50,7 @@ class Log_HTTP_Requests
         add_action( 'wp_ajax_lhr_clear', [ $this, 'lhr_clear' ] );
     }
 
-
+    /** @return \Log_HTTP_Requests */
     public static function instance() {
         if ( ! isset( self::$instance ) ) {
             self::$instance = new self;
@@ -147,7 +148,9 @@ class Log_HTTP_Requests
             'request_args' => json_encode( $args ),
             'response' => json_encode( $response ),
             'runtime' => ( microtime( true ) - $this->start_time ),
-            'date_added' => current_time( 'mysql' )
+            'date_added' => current_time( 'mysql' ),
+            'referrer' => $_SERVER['REQUEST_URI'] ?: null,
+            'referrer_args' => json_encode( $_GET ) ?: null
         ]);
 
         if ( false !== $log_data ) {
