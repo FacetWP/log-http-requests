@@ -18,16 +18,19 @@
                     var runtime = parseFloat(row.runtime);
                     var css_class = (runtime > 1) ? ' warn' : '';
                     css_class = (runtime > 2) ? ' error' : css_class;
-                    html += `
-                    <tr>
-                        <td class="field-url">
-                            <div><a href="javascript:;" data-id="` + idx + `">` + row.url + `</a></div>
-                        </td>
-                        <td class="field-status-code">` + row.status_code + `</td>
-                        <td class="field-runtime` + css_class + `">` + row.runtime + `</td>
-                        <td class="field-date" title="` + row.date_raw + `">` + row.date_added + `</td>
-                    </tr>
-                    `;
+                    
+                    var tr = $('<tr>');
+                    var urlTd = $('<td class="field-url">').append(
+                        $('<div>').append(
+                            $('<a href="javascript:;">').attr('data-id', idx).text(row.url)
+                        )
+                    );
+                    tr.append(urlTd);
+                    tr.append($('<td class="field-status-code">').text(row.status_code));
+                    tr.append($('<td class="field-runtime">').addClass(css_class).text(row.runtime));
+                    tr.append($('<td class="field-date">').attr('title', row.date_raw).text(row.date_added));
+                    
+                    html += tr.prop('outerHTML');
                 });
                 $('.lhr-listing tbody').html(html);
                 $('.lhr-pager').html(data.pager);
