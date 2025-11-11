@@ -53,11 +53,15 @@ In the above example, the `$data` array keys correspond to columns within the `l
 * Security: Added prepared statements for all database queries
 * Security: Added input sanitization for POST/GET data with proper type checking
 * Security: Added proper output escaping throughout templates
+* Security: Fixed potential XSS vulnerability in JavaScript table rendering
 * Security: Improved data validation with absint() and floatval() for numeric values
 * Security: Replaced json_encode() with wp_json_encode() for better security
+* Security: Added capability check to settings page for better access control
 * Improvement: Updated WordPress compatibility to 6.8
 * Improvement: Added text domain for internationalization support
 * Improvement: Modernized code to follow WordPress coding standards
+* Improvement: Replaced deprecated current_time('timestamp') with modern WordPress functions
+* Improvement: Improved database table creation using dbDelta() and get_charset_collate()
 
 = 1.4.1
 * Fixed PHP8 deprecation notices
