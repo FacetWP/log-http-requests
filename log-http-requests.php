@@ -76,10 +76,9 @@ class Log_HTTP_Requests
     function cleanup() {
         global $wpdb;
 
-        $now = current_time( 'timestamp' );
         $expires = apply_filters( 'lhr_expiration_days', 1 );
-        $expires = date( 'Y-m-d H:i:s', strtotime( '-' . absint( $expires ) . ' days', $now ) );
-        $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}lhr_log WHERE date_added < %s", $expires ) );
+        $expires_date = current_datetime()->modify( '-' . absint( $expires ) . ' days' )->format( 'Y-m-d H:i:s' );
+        $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}lhr_log WHERE date_added < %s", $expires_date ) );
     }
 
 
@@ -167,7 +166,7 @@ class Log_HTTP_Requests
 
 
     function time_since( $time ) {
-        $time = current_time( 'timestamp' ) - strtotime( $time );
+        $time = time() - strtotime( $time );
         $time = ( $time < 1 ) ? 1 : $time;
         $tokens = array (
             31536000 => 'year',
