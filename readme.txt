@@ -2,7 +2,7 @@
 Contributors: mgibbs189
 Tags: log, wp_http, requests, update checks, api
 Requires at least: 5.0
-Tested up to: 6.2.2
+Tested up to: 6.8
 Stable tag: trunk
 License: GPLv2
 
@@ -47,6 +47,21 @@ In the above example, the `$data` array keys correspond to columns within the `l
 2. Browse to `Tools > Log HTTP Requests` to view log entries.
 
 == Changelog ==
+
+= 1.5.0 =
+* Security: Fixed SQL injection vulnerabilities in cleanup() and capture_request() methods
+* Security: Added prepared statements for all database queries
+* Security: Added input sanitization for POST/GET data with proper type checking
+* Security: Added proper output escaping throughout templates
+* Security: Fixed potential XSS vulnerability in JavaScript table rendering
+* Security: Improved data validation with absint() and floatval() for numeric values
+* Security: Replaced json_encode() with wp_json_encode() for better security
+* Security: Added capability check to settings page for better access control
+* Improvement: Updated WordPress compatibility to 6.8
+* Improvement: Added text domain for internationalization support
+* Improvement: Modernized code to follow WordPress coding standards
+* Improvement: Replaced deprecated current_time('timestamp') with modern WordPress functions
+* Improvement: Improved database table creation using dbDelta() and get_charset_collate()
 
 = 1.4.1
 * Fixed PHP8 deprecation notices

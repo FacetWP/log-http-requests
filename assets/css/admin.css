@@ -20,7 +20,13 @@
 }
 
 .widefat .field-url {
-    word-break: break-word;
+    max-width: 500px;
+}
+
+.widefat .field-url div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .widefat .field-runtime.warn {

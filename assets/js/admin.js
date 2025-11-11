@@ -18,21 +18,53 @@
                     var runtime = parseFloat(row.runtime);
                     var css_class = (runtime > 1) ? ' warn' : '';
                     css_class = (runtime > 2) ? ' error' : css_class;
-                    html += `
-                    <tr>
-                        <td class="field-url">
-                            <div><a href="javascript:;" data-id="` + idx + `">` + row.url + `</a></div>
-                        </td>
-                        <td class="field-status-code">` + row.status_code + `</td>
-                        <td class="field-runtime` + css_class + `">` + row.runtime + `</td>
-                        <td class="field-date" title="` + row.date_raw + `">` + row.date_added + `</td>
-                    </tr>
-                    `;
+                    
+                    // Format date on client-side based on local timezone
+                    var dateStr = LHR.formatTimeSince(row.date_timestamp);
+                    var dateTitle = new Date(row.date_timestamp * 1000).toLocaleString();
+                    
+                    var tr = $('<tr>');
+                    var urlTd = $('<td class="field-url">').append(
+                        $('<div>').append(
+                            $('<a href="javascript:;">').attr('data-id', idx).text(row.url)
+                        )
+                    );
+                    tr.append(urlTd);
+                    tr.append($('<td class="field-status-code">').text(row.status_code));
+                    tr.append($('<td class="field-runtime">').addClass(css_class).text(row.runtime));
+                    tr.append($('<td class="field-date">').attr('title', dateTitle).text(dateStr));
+                    
+                    html += tr.prop('outerHTML');
                 });
                 $('.lhr-listing tbody').html(html);
                 $('.lhr-pager').html(data.pager);
                 $('.lhr-refresh').text('Refresh').removeAttr('disabled');
             }, 'json');
+        }
+
+        // Format timestamp to "X time ago" format
+        LHR.formatTimeSince = function(timestamp) {
+            var now = Math.floor(Date.now() / 1000);
+            var diff = now - timestamp;
+            diff = (diff < 1) ? 1 : diff;
+            
+            var tokens = {
+                31536000: 'year',
+                2592000: 'month',
+                604800: 'week',
+                86400: 'day',
+                3600: 'hour',
+                60: 'minute',
+                1: 'second'
+            };
+            
+            for (var unit in tokens) {
+                if (diff < unit) continue;
+                var numberOfUnits = Math.floor(diff / unit);
+                return numberOfUnits + ' ' + tokens[unit] + (numberOfUnits > 1 ? 's' : '');
+            }
+            
+            return '1 second';
         }
 
         // Clear
