@@ -63,7 +63,7 @@ In the above example, the `$data` array keys correspond to columns within the `l
 * Improvement: Replaced deprecated current_time('timestamp') with modern WordPress functions
 * Improvement: Improved database table creation using dbDelta() and get_charset_collate()
 
-= 1.4.1
+= 1.4.1 =
 * Fixed PHP8 deprecation notices
 
 = 1.4 =
