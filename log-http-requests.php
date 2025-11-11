@@ -2,9 +2,11 @@
 /*
 Plugin Name: Log HTTP Requests
 Description: Log all those pesky WP HTTP requests
-Version: 1.4.1
+Version: 1.5.0
 Author: FacetWP, LLC
 Author URI: https://facetwp.com/
+Text Domain: log-http-requests
+Domain Path: /languages
 
 Copyright 2023 FacetWP, LLC
 
@@ -34,7 +36,7 @@ class Log_HTTP_Requests
     function __construct() {
 
         // setup variables
-        define( 'LHR_VERSION', '1.4.1' );
+        define( 'LHR_VERSION', '1.5.0' );
         define( 'LHR_DIR', dirname( __FILE__ ) );
         define( 'LHR_URL', plugins_url( '', __FILE__ ) );
         define( 'LHR_BASENAME', plugin_basename( __FILE__ ) );
@@ -76,8 +78,8 @@ class Log_HTTP_Requests
 
         $now = current_time( 'timestamp' );
         $expires = apply_filters( 'lhr_expiration_days', 1 );
-        $expires = date( 'Y-m-d H:i:s', strtotime( '-' . $expires . ' days', $now ) );
-        $wpdb->query( "DELETE FROM {$wpdb->prefix}lhr_log WHERE date_added < '$expires'" );
+        $expires = date( 'Y-m-d H:i:s', strtotime( '-' . absint( $expires ) . ' days', $now ) );
+        $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}lhr_log WHERE date_added < %s", $expires ) );
     }
 
 
@@ -87,6 +89,9 @@ class Log_HTTP_Requests
 
 
     function settings_page() {
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'log-http-requests' ) );
+        }
         include( LHR_DIR . '/templates/page-settings.php' );
     }
 
@@ -112,8 +117,9 @@ class Log_HTTP_Requests
     function lhr_query() {
         $this->validate();
 
+        $data = isset( $_POST['data'] ) && is_array( $_POST['data'] ) ? $_POST['data'] : [];
         $output = [
-            'rows'  => LHR()->query->get_results( $_POST['data'] ),
+            'rows'  => LHR()->query->get_results( $data ),
             'pager' => LHR()->query->paginate()
         ];
 
@@ -143,15 +149,19 @@ class Log_HTTP_Requests
 
         // False to ignore current row
         $log_data = apply_filters( 'lhr_log_data', [
-            'url' => $url,
-            'request_args' => json_encode( $args ),
-            'response' => json_encode( $response ),
-            'runtime' => ( microtime( true ) - $this->start_time ),
+            'url' => esc_url_raw( $url ),
+            'request_args' => wp_json_encode( $args ),
+            'response' => wp_json_encode( $response ),
+            'runtime' => floatval( microtime( true ) - $this->start_time ),
             'date_added' => current_time( 'mysql' )
         ]);
 
         if ( false !== $log_data ) {
-            $wpdb->insert( $wpdb->prefix . 'lhr_log', $log_data );
+            $wpdb->insert( 
+                $wpdb->prefix . 'lhr_log', 
+                $log_data,
+                [ '%s', '%s', '%s', '%f', '%s' ]
+            );
         }
     }
 
