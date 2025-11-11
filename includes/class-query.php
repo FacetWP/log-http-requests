@@ -58,8 +58,8 @@ class LHR_Query
                 $row['status_code'] = (int) $response['response']['code'];
             }
             $row['runtime'] = round( floatval( $row['runtime'] ), 4 );
-            $row['date_raw'] = $row['date_added'];
-            $row['date_added'] = LHR()->time_since( $row['date_added'] );
+            // Return timestamp for client-side formatting
+            $row['date_timestamp'] = strtotime( $row['date_added'] . ' UTC' );
             $row['url'] = esc_url( $row['url'] );
             $output[] = $row;
         }

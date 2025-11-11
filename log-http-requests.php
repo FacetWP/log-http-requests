@@ -77,7 +77,7 @@ class Log_HTTP_Requests
         global $wpdb;
 
         $expires = apply_filters( 'lhr_expiration_days', 1 );
-        $expires_date = current_datetime()->modify( '-' . absint( $expires ) . ' days' )->format( 'Y-m-d H:i:s' );
+        $expires_date = gmdate( 'Y-m-d H:i:s', strtotime( '-' . absint( $expires ) . ' days' ) );
         $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}lhr_log WHERE date_added < %s", $expires_date ) );
     }
 
@@ -152,7 +152,7 @@ class Log_HTTP_Requests
             'request_args' => wp_json_encode( $args ),
             'response' => wp_json_encode( $response ),
             'runtime' => floatval( microtime( true ) - $this->start_time ),
-            'date_added' => current_time( 'mysql' )
+            'date_added' => gmdate( 'Y-m-d H:i:s' )
         ]);
 
         if ( false !== $log_data ) {
@@ -161,27 +161,6 @@ class Log_HTTP_Requests
                 $log_data,
                 [ '%s', '%s', '%s', '%f', '%s' ]
             );
-        }
-    }
-
-
-    function time_since( $time ) {
-        $time = time() - strtotime( $time );
-        $time = ( $time < 1 ) ? 1 : $time;
-        $tokens = array (
-            31536000 => 'year',
-            2592000 => 'month',
-            604800 => 'week',
-            86400 => 'day',
-            3600 => 'hour',
-            60 => 'minute',
-            1 => 'second'
-        );
-
-        foreach ( $tokens as $unit => $text ) {
-            if ( $time < $unit ) continue;
-            $numberOfUnits = floor( $time / $unit );
-            return $numberOfUnits . ' ' . $text . ( ( $numberOfUnits > 1 ) ? 's' : '' );
         }
     }
 }
